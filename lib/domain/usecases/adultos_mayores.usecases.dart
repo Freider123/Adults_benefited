@@ -5,7 +5,7 @@ class AdultUsecases {
   final AdultRepository _adultRepository;
   AdultUsecases(this._adultRepository);
 
-  Future<AdultosMayoresModel> getAdultById(String cedula) async {
+  Future<List<AdultosMayoresModel>> getAdultById(String cedula) async {
     return await _adultRepository.getAdultById(cedula);
   }
 }
