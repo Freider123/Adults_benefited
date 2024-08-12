@@ -1,10 +1,9 @@
 import 'dart:convert';
-
 import 'package:consulta_adulto_mayor/domain/models/adultos_mayores.model.dart';
 import 'package:consulta_adulto_mayor/domain/repository/adultos_mayores.repository.dart';
 import 'package:http/http.dart' as http;
 
-class httpAdultService extends AdultRepository {
+class HttpAdultService extends AdultRepository {
   @override
   Future<List<AdultosMayoresModel>> getAdultById(String cedula) async {
     String url =
@@ -12,17 +11,18 @@ class httpAdultService extends AdultRepository {
 
     try {
       final response = await http.get(Uri.parse(url));
-      final body = jsonDecode(response.body);
-      final AdultosMayoresModel dataResponde =
-          AdultosMayoresModel.fromJson(body);
-      if (dataResponde.cedula.isNotEmpty) {
-        final List<AdultosMayoresModel> datafinal =
-            dataResponde as List<AdultosMayoresModel>;
-        return datafinal;
+      if (response.statusCode == 200) {
+        final List<AdultosMayoresModel> body = jsonDecode(response.body);
+        final List<AdultosMayoresModel> dataFinal = body
+            .map((dynamic item) => AdultosMayoresModel.fromJson(item))
+            .toList();
+
+        return dataFinal;
+      } else {
+        throw Exception('Failed to load data');
       }
-      return [];
     } catch (e) {
-      print('Ocurrió una excepción:');
+      print('Ocurrió una excepción: $e');
       throw Exception('Failed to load data');
     }
   }
