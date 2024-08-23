@@ -1,7 +1,9 @@
-import 'package:consulta_adulto_mayor/presentacion/modules/layout/pages/home/home.dart';
+import 'package:consulta_adulto_mayor/article_injetion.dart';
+import 'package:consulta_adulto_mayor/presentacion/modules/pages/home/home.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  initArticlesInjections();
   runApp(const MyApp());
 }
 

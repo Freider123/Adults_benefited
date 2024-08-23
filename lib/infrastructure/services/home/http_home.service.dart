@@ -11,13 +11,18 @@ class HttpAdultService extends AdultRepository {
 
     try {
       final response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        final List<AdultosMayoresModel> body = jsonDecode(response.body);
-        final List<AdultosMayoresModel> dataFinal = body
-            .map((dynamic item) => AdultosMayoresModel.fromJson(item))
-            .toList();
 
-        return dataFinal;
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+
+        // Asegurarse de mapear cada item al modelo adecuado y convertirlo a una lista.
+        final List<AdultosMayoresModel> adultosMayoresModel = data
+            .map((item) =>
+                AdultosMayoresModel.fromJson(item as Map<String, dynamic>))
+            .toList();
+        print("adultosMayoresModel ${adultosMayoresModel}");
+
+        return adultosMayoresModel;
       } else {
         throw Exception('Failed to load data');
       }

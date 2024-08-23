@@ -4,9 +4,7 @@ part of 'adult_bloc.dart';
 sealed class AdultEvent {}
 
 class GetLoanByIdEvent extends AdultEvent {
+  final String cedula;
 
-  final String id;
-    GetLoanByIdEvent(
-      this.id
-  );
+  GetLoanByIdEvent({required this.cedula}) : super();
 }

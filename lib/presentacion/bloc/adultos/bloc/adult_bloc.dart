@@ -7,7 +7,6 @@ part 'adult_event.dart';
 part 'adult_state.dart';
 
 class AdultBloc extends Bloc<AdultEvent, AdultState> {
-
   final AdultUsecases _adultUsecases;
 
   AdultBloc(this._adultUsecases) : super(AdultInitial()) {
@@ -15,10 +14,14 @@ class AdultBloc extends Bloc<AdultEvent, AdultState> {
   }
 
   void _getLoanById(GetLoanByIdEvent event, Emitter<AdultState> emit) async {
-    String id = event.id;
-    final List<AdultosMayoresModel> response = await _adultUsecases.getAdultById(id);
+    String id = event.cedula;
+    emit(LoadingGetLoanByIdState());
+    final List<AdultosMayoresModel> response =
+        await _adultUsecases.getAdultById(id);
     if (response.isNotEmpty) {
-      emit(GetAdultByIdSuccessState (responsePages: response));
-    } else {}
+      emit(GetAdultByIdSuccessState(responsePages: response));
+    } else {
+      emit(GetAdultByIdErrorState(responsePages: response));
+    }
   }
 }

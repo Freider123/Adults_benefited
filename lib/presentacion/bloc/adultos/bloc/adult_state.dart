@@ -25,7 +25,7 @@ class GetAdultByIdSuccessState extends AdultState {
 }
 
 class GetAdultByIdErrorState extends AdultState {
-  final AdultosMayoresModel responsePages;
+  final List<AdultosMayoresModel> responsePages;
 
   const GetAdultByIdErrorState({required this.responsePages}): super(null);
 
