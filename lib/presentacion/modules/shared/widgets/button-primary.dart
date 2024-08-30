@@ -38,7 +38,7 @@ class ButtonPrimaryCustom extends StatelessWidget {
           child: Text(
             text,
             style: const TextStyle(
-              color: Color.fromRGBO(0, 60, 97, 1),
+              color: Color.fromRGBO(255, 255, 255, 1),
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),

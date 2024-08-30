@@ -38,7 +38,6 @@ class HomeState extends State<HomeView> {
       body: BlocListener<AdultBloc, AdultState>(
         listener: (context, state) {
           if (state is GetAdultByIdErrorState) {
-            // Navigator.pop(context);
             print("no data");
             w.AlertScreen(
               titulo: 'Lo siento',
@@ -49,12 +48,16 @@ class HomeState extends State<HomeView> {
             ).mostrarAlerta(context);
           }
 
-          // if (state is LoadingGetLoanByIdState) {
-          //   loading();
-          // }
+          if (state is LoadingGetLoanByIdState) {
+            showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context) => Center(
+                      child: CircularProgressIndicator(),
+                    ));
+          }
 
           if (state is GetAdultByIdSuccessState) {
-            // Navigator.pop(context);
             final datos = state.responsePages;
             print("datos ${datos[0].primernombre}");
             w.AlertScreen(
@@ -72,91 +75,123 @@ class HomeState extends State<HomeView> {
           builder: (BuildContext context, AdultState state) {
             return Stack(
               children: [
-                Fondo(),
                 Column(
                   children: [
                     Expanded(
                       child: SingleChildScrollView(
                         child: Form(
                           key: _formKey,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            child: Container(
+                          child: Container(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.25,
+                                width: double.infinity,
+                                color: Colors.amber,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 30, right: 20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        "Colombia Mayor",
+                                        style: TextStyle(
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        "Consulta si eres beneficiario al sucidio Colombia adulto mayor",
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                      SizedBox(
+                                        height: 30,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 25),
                                 child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.37,
-                                  width: double.infinity,
-                                  child: Image.asset(
-                                      "assets/Logo_Prosperidad_Social.png"),
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    const Text(
+                                      "Ingrese su número de identifícacion",
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    InputTextCustom(
+                                      keyboardType: TextInputType.number,
+                                      isRequired: true,
+                                      hintText: "Cedula de ciudadania",
+                                      controller: cedulaController,
+                                      borderColor: Colors.amber,
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    ButtonPrimaryCustom(
+                                        text: "Consultar",
+                                        color: Colors.amber,
+                                        onPressed: () {
+                                          FocusScope.of(context).unfocus();
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            final event = GetLoanByIdEvent(
+                                                cedula: cedulaController.text);
+                                            context
+                                                .read<AdultBloc>()
+                                                .add(event);
+                                          }
+                                        }),
+                                  ],
                                 ),
-                                InputTextCustom(
-                                  keyboardType: TextInputType.number,
-                                  isRequired: true,
-                                  hintText: "Cedula de ciudadania",
-                                  controller: cedulaController,
-                                ),
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                ButtonPrimaryCustom(
-                                    text: "Consultar",
-                                    color:
-                                        const Color.fromRGBO(255, 255, 255, 1),
-                                    onPressed: () {
-                                      setState(() {});
-                                      if (_formKey.currentState!.validate()) {
-                                        print("boton");
-                                        FocusScope.of(context).unfocus();
-                                        final event = GetLoanByIdEvent(
-                                            cedula: cedulaController.text);
-                                        context.read<AdultBloc>().add(event);
-                                      }
-                                      setState(() {});
-                                    }),
-                              ],
-                            )),
-                          ),
+                              )
+                            ],
+                          )),
                         ),
                       ),
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        IconText(
-                          texto: 'Facebook',
-                          icono: FaIcon(
-                            FontAwesomeIcons.facebook,
-                            color: colorRedes,
+                        Text(
+                          "By powered",
+                          style: TextStyle(
+                            fontSize: 18,
                           ),
-                          color: colorRedes,
-                          urlApp:
-                              "https://www.facebook.com/profile.php?id=61561925007498",
                         ),
-                        IconText(
-                          texto: 'Instagram',
-                          icono: FaIcon(
-                            FontAwesomeIcons.instagram,
-                            color: colorRedes,
-                          ),
-                          color: colorRedes,
-                          urlApp: 'https://www.instagram.com/simasoftw/',
+                        SizedBox(
+                          width: 10,
                         ),
-                        IconText(
-                          texto: 'whassapp',
-                          icono: FaIcon(
-                            FontAwesomeIcons.whatsapp,
-                            color: colorRedes,
-                          ),
-                          color: colorRedes,
-                          urlApp:
-                              'whatsapp://send?phone=3052237829&text=hola como estas',
+                        Image.asset(
+                          "assets/Recurso.png",
+                          scale: 3.2,
                         )
                       ],
+                    ),
+                    SizedBox(
+                      height: 20,
                     )
                   ],
                 ),
@@ -166,13 +201,5 @@ class HomeState extends State<HomeView> {
         ),
       ),
     ));
-  }
-
-  void loading() {
-    showDialog(
-        context: context,
-        builder: (context) => Center(
-              child: CircularProgressIndicator(),
-            ));
   }
 }

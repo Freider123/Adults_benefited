@@ -14,6 +14,7 @@ class InputTextCustom extends StatefulWidget {
   double? borderRadio = 8.0;
   int? maxLines = 1;
   bool readonly;
+  Color? borderColor;
 
   InputTextCustom(
       {Key? key,
@@ -29,6 +30,7 @@ class InputTextCustom extends StatefulWidget {
       this.minLength,
       this.borderRadio,
       this.maxLines,
+      this.borderColor,
       this.readonly = false})
       : super(key: key);
 
@@ -49,17 +51,20 @@ class _InputTextCustomState extends State<InputTextCustom> {
       autofocus: false,
       keyboardType: widget.keyboardType,
       readOnly: widget.readonly,
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: Colors.black),
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(widget.borderRadio ?? 8),
         ),
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.amber, width: 2),
+            borderRadius: BorderRadius.circular(widget.borderRadio ?? 8)),
         labelText: widget.labelText,
         hintText: widget.hintText,
         hintStyle: TextStyle(color: Colors.white, fontSize: 20),
         prefixIcon: widget.prefixIcon != null ? Icon(widget.prefixIcon) : null,
         errorStyle: TextStyle(
-          color: Color.fromARGB(255, 255, 123, 0), // Color del texto de error
+          color: Color.fromARGB(255, 255, 0, 0), // Color del texto de error
           fontSize: 16, // Tamaño del texto de error
           fontWeight: FontWeight.bold, // Peso de la fuente
         ),
